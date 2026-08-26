@@ -1,0 +1,15 @@
+apiVersion: openchoreo.dev/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    openchoreo.dev/description: Doclet collaborative document editor sample app
+  name: doclet
+  namespace: default
+spec:
+  deploymentPipelineRef:
+    kind: DeploymentPipeline
+    name: default
+  type:
+    kind: ClusterProjectType
+    name: default
+
