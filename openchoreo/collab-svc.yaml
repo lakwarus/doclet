@@ -1,0 +1,58 @@
+apiVersion: openchoreo.dev/v1alpha1
+kind: Component
+metadata:
+  labels:
+    openchoreo.dev/project: doclet
+  name: collab-svc
+  namespace: default
+spec:
+  autoDeploy: true
+  componentType:
+    kind: ClusterComponentType
+    name: deployment/service
+  owner:
+    projectName: doclet
+  workflow:
+    kind: ClusterWorkflow
+    name: dockerfile-builder
+    parameters:
+      docker:
+        context: .
+        filePath: services/collab/Dockerfile
+      repository:
+        appPath: .
+        revision:
+          branch: main
+        url: https://github.com/lakwarus/doclet
+
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    openchoreo.dev/component: collab-svc
+    openchoreo.dev/project: doclet
+  name: collab-svc-workload
+  namespace: default
+  resourceVersion: "66607398"
+  uid: ef3b69f3-abca-4ad8-a458-08818fb82b08
+spec:
+  container:
+    image: 237632677974.dkr.ecr.us-west-2.amazonaws.com/openchoreo-poc:default-doclet-collab-svc-v1-696a9dc7
+  dependencies:
+    resources:
+    - envBindings:
+        url: DOCLET_NATS_URL
+      ref: doclet-nats
+  endpoints:
+    ws:
+      basePath: /ws
+      port: 8090
+      type: Websocket
+      visibility:
+      - project
+      - external
+  owner:
+    componentName: collab-svc
+    projectName: doclet
+

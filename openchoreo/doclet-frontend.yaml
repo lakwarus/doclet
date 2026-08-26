@@ -1,0 +1,83 @@
+apiVersion: openchoreo.dev/v1alpha1
+kind: Component
+metadata:
+  labels:
+    openchoreo.dev/project: doclet
+  name: doclet-frontend
+  namespace: default
+spec:
+  autoDeploy: true
+  componentType:
+    kind: ClusterComponentType
+    name: deployment/web-application
+  owner:
+    projectName: doclet
+  workflow:
+    kind: ClusterWorkflow
+    name: dockerfile-builder
+    parameters:
+      docker:
+        context: .
+        filePath: frontend/Dockerfile
+      repository:
+        appPath: .
+        revision:
+          branch: main
+        url: https://github.com/lakwarus/doclet
+
+---
+apiVersion: openchoreo.dev/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    openchoreo.dev/component: doclet-frontend
+    openchoreo.dev/project: doclet
+  name: doclet-frontend-workload
+  namespace: default
+spec:
+  container:
+    files:
+    - key: default.conf
+      mountPath: /etc/nginx/conf.d
+      value: |
+        server {
+          listen 8080;
+          server_name _;
+
+          root /usr/share/nginx/html;
+          index index.html;
+
+          location / {
+            try_files $uri $uri/ /index.html;
+          }
+        }
+    - key: config.json
+      mountPath: /usr/share/nginx/html
+      value: |
+        {
+          "docServiceUrl": "https://development-default.apps.aws.openchoreo-poc.choreo.dev/document-svc-http",
+          "collabWsUrl": "wss://development-default.apps.aws.openchoreo-poc.choreo.dev/collab-svc-ws"
+        }
+    image: 237632677974.dkr.ecr.us-west-2.amazonaws.com/openchoreo-poc:default-doclet-doclet-frontend-v1-696a9dc7
+  dependencies:
+    endpoints:
+    - component: document-svc
+      envBindings:
+        address: _DEP_DOCUMENT_SVC_URL
+      name: http
+      visibility: project
+    - component: collab-svc
+      envBindings:
+        address: _DEP_COLLAB_SVC_URL
+      name: ws
+      visibility: project
+  endpoints:
+    http:
+      port: 8080
+      type: HTTP
+      visibility:
+      - external
+  owner:
+    componentName: doclet-frontend
+    projectName: doclet
+

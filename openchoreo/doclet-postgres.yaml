@@ -1,0 +1,28 @@
+apiVersion: openchoreo.dev/v1alpha1
+kind: Resource
+metadata:
+  labels:
+    openchoreo.dev/project: doclet
+  name: doclet-postgres
+  namespace: default
+spec:
+  owner:
+    projectName: doclet
+  parameters:
+    database: doclet
+  type:
+    kind: ClusterResourceType
+    name: postgres
+status:
+  conditions:
+  - lastTransitionTime: "2026-08-26T00:45:41Z"
+    message: ResourceRelease doclet-postgres-6d67ff9695 in place
+    observedGeneration: 1
+    reason: Reconciled
+    status: "True"
+    type: Ready
+  latestRelease:
+    hash: 6d67ff9695
+    name: doclet-postgres-6d67ff9695
+  observedGeneration: 1
+
