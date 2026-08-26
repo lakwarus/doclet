@@ -11,16 +11,3 @@ spec:
   type:
     kind: ClusterResourceType
     name: nats
-status:
-  conditions:
-  - lastTransitionTime: "2026-08-26T00:45:42Z"
-    message: ResourceRelease doclet-nats-695dc5d57f in place
-    observedGeneration: 1
-    reason: Reconciled
-    status: "True"
-    type: Ready
-  latestRelease:
-    hash: 695dc5d57f
-    name: doclet-nats-695dc5d57f
-  observedGeneration: 1
-
