@@ -34,11 +34,7 @@ metadata:
     openchoreo.dev/project: doclet
   name: document-svc-workload
   namespace: default
-  resourceVersion: "66607352"
-  uid: b6bedff7-fd4e-487d-b46e-b23c9d540158
 spec:
-  container:
-    image: 237632677974.dkr.ecr.us-west-2.amazonaws.com/openchoreo-poc:default-doclet-document-svc-v1-696a9dc7
   dependencies:
     resources:
     - envBindings:

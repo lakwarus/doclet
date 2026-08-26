@@ -11,3 +11,5 @@ spec:
   type:
     kind: ClusterResourceType
     name: nats
+
+---

@@ -35,30 +35,6 @@ metadata:
   name: doclet-frontend-workload
   namespace: default
 spec:
-  container:
-    files:
-    - key: default.conf
-      mountPath: /etc/nginx/conf.d
-      value: |
-        server {
-          listen 8080;
-          server_name _;
-
-          root /usr/share/nginx/html;
-          index index.html;
-
-          location / {
-            try_files $uri $uri/ /index.html;
-          }
-        }
-    - key: config.json
-      mountPath: /usr/share/nginx/html
-      value: |
-        {
-          "docServiceUrl": "https://development-default.apps.aws.openchoreo-poc.choreo.dev/document-svc-http",
-          "collabWsUrl": "wss://development-default.apps.aws.openchoreo-poc.choreo.dev/collab-svc-ws"
-        }
-    image: 237632677974.dkr.ecr.us-west-2.amazonaws.com/openchoreo-poc:default-doclet-doclet-frontend-v1-696a9dc7
   dependencies:
     endpoints:
     - component: document-svc
